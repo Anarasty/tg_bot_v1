@@ -1,0 +1,141 @@
+.data-table-card {
+  width: min(100%, 1320px);
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid #e4e9f2;
+  border-radius: 18px;
+  box-shadow: 0 18px 50px rgba(24, 34, 48, 0.09);
+}
+
+.data-table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 24px 28px;
+  border-bottom: 1px solid #e8edf4;
+}
+
+.data-table-eyebrow {
+  margin-bottom: 4px;
+  color: #3772e8;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.data-table-header h1 {
+  color: #182230;
+  font-size: clamp(1.25rem, 2vw, 1.65rem);
+  line-height: 1.25;
+}
+
+.data-table-count {
+  flex-shrink: 0;
+  padding: 7px 12px;
+  color: #2c5fbf;
+  background: #edf4ff;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.data-table-scroll {
+  overflow-x: auto;
+}
+
+.data-table {
+  width: 100%;
+  min-width: 1120px;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.data-table th {
+  padding: 14px 18px;
+  color: #5a687c;
+  background: #f8fafc;
+  border-bottom: 1px solid #e4e9f2;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.data-table td {
+  padding: 16px 18px;
+  border-bottom: 1px solid #edf0f5;
+  color: #354154;
+  font-size: 0.875rem;
+  white-space: nowrap;
+}
+
+.data-table tbody tr {
+  transition: background-color 160ms ease;
+}
+
+.data-table tbody tr:hover {
+  background: #f7faff;
+}
+
+.data-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.data-table td:nth-child(2) {
+  color: #182230;
+  font-weight: 650;
+}
+
+.data-table td:nth-child(4) {
+  color: #b54708;
+  font-weight: 700;
+}
+
+.data-table-footer {
+  display: flex;
+  justify-content: center;
+  padding: 18px 24px;
+  border-top: 1px solid #e8edf4;
+}
+
+.data-table-show-more {
+  padding: 10px 20px;
+  color: #ffffff;
+  background: #3772e8;
+  border: 0;
+  border-radius: 9px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 160ms ease, transform 160ms ease;
+}
+
+.data-table-show-more:hover {
+  background: #285fc9;
+}
+
+.data-table-show-more:active {
+  transform: translateY(1px);
+}
+
+.data-table-show-more:focus-visible {
+  outline: 3px solid rgba(55, 114, 232, 0.3);
+  outline-offset: 3px;
+}
+
+@media (max-width: 640px) {
+  .app {
+    padding: 20px 12px;
+  }
+
+  .data-table-card {
+    border-radius: 14px;
+  }
+
+  .data-table-header {
+    align-items: flex-start;
+    padding: 20px;
+  }
+}
