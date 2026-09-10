@@ -1,0 +1,94 @@
+.action-toolbar {
+  position: fixed;
+  top: 50%;
+  right: 22px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 9px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid #e0e6ef;
+  border-radius: 15px;
+  box-shadow: 0 14px 36px rgba(24, 34, 48, 0.16);
+  transform: translateY(-50%);
+  backdrop-filter: blur(12px);
+}
+
+.action-toolbar-button {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  color: #415069;
+  background: transparent;
+  border: 0;
+  border-radius: 10px;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    color 160ms ease,
+    background-color 160ms ease,
+    transform 160ms ease;
+}
+
+.action-toolbar-button svg {
+  width: 21px;
+  height: 21px;
+  stroke-width: 2;
+}
+
+.action-toolbar-button:hover {
+  color: #285fc9;
+  background: #edf4ff;
+  transform: translateY(-1px);
+}
+
+.action-toolbar-button:focus-visible {
+  outline: 3px solid rgba(55, 114, 232, 0.3);
+  outline-offset: 2px;
+}
+
+.action-toolbar-divider {
+  height: 1px;
+  margin: 2px 5px;
+  background: #e4e9f2;
+}
+
+.action-toolbar-button--logout:hover {
+  color: #c43232;
+  background: #fff0f0;
+}
+
+:root[data-theme="dark"] .action-toolbar {
+  background: rgba(24, 30, 41, 0.94);
+  border-color: #343d4c;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.35);
+}
+
+:root[data-theme="dark"] .action-toolbar-button {
+  color: #c3ccda;
+}
+
+:root[data-theme="dark"] .action-toolbar-button:hover {
+  color: #a9c5ff;
+  background: #26334a;
+}
+
+:root[data-theme="dark"] .action-toolbar-divider {
+  background: #343d4c;
+}
+
+:root[data-theme="dark"] .action-toolbar-button--logout:hover {
+  color: #ff9b9b;
+  background: #3d272d;
+}
+
+@media (max-width: 760px) {
+  .action-toolbar {
+    top: auto;
+    right: 12px;
+    bottom: 16px;
+    transform: none;
+  }
+}

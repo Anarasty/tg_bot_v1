@@ -1,47 +1,47 @@
-import { useState } from 'react'
-import './DataTable.css'
+import { useState } from "react";
+import "./DataTable.css";
 
-const PAGE_SIZE = 15
+const PAGE_SIZE = 15;
 
 const columns = [
-  { key: 'platform', label: 'Platform' },
-  { key: 'fullName', label: 'Full Name' },
-  { key: 'iban', label: 'IBAN' },
-  { key: 'ibanProblem', label: 'IBAN Problem' },
-  { key: 'taxId', label: 'Tax ID' },
-  { key: 'phone', label: 'Phone' },
-  { key: 'submittedDate', label: 'Submitted date' },
-]
+  { key: "platform", label: "Platform" },
+  { key: "fullName", label: "Full Name" },
+  { key: "iban", label: "IBAN" },
+  { key: "ibanProblem", label: "IBAN Problem" },
+  { key: "taxId", label: "Tax ID" },
+  { key: "phone", label: "Phone" },
+  { key: "submittedDate", label: "Submitted date" },
+];
 
 function maskIban(iban) {
-  const groups = iban.split(' ')
+  const groups = iban.split(" ");
 
   return groups
     .map((group, index) => {
-      const shouldMask = index > 1 && index < groups.length - 1
-      return shouldMask ? '*'.repeat(group.length) : group
+      const shouldMask = index > 1 && index < groups.length - 1;
+      return shouldMask ? "*".repeat(group.length) : group;
     })
-    .join(' ')
+    .join(" ");
 }
 
 function maskTaxId(taxId) {
-  const value = String(taxId)
+  const value = String(taxId);
 
-  if (value.length <= 6) return '*'.repeat(value.length)
+  if (value.length <= 6) return "*".repeat(value.length);
 
-  return `${value.slice(0, 4)}${'*'.repeat(value.length - 6)}${value.slice(-2)}`
+  return `${value.slice(0, 4)}${"*".repeat(value.length - 6)}${value.slice(-2)}`;
 }
 
 function DataTable({ data }) {
-  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE)
-  const visibleRows = data.slice(0, visibleCount)
-  const hasMoreRows = visibleCount < data.length
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+  const visibleRows = data.slice(0, visibleCount);
+  const hasMoreRows = visibleCount < data.length;
 
   function getCellValue(row, key) {
-    if (key === 'iban') return maskIban(row[key])
-    if (key === 'taxId') return maskTaxId(row[key])
+    if (key === "iban") return maskIban(row[key]);
+    if (key === "taxId") return maskTaxId(row[key]);
 
-    return row[key]
+    return row[key];
   }
 
   return (
@@ -89,7 +89,7 @@ function DataTable({ data }) {
         </div>
       )}
     </section>
-  )
+  );
 }
 
-export default DataTable
+export default DataTable;
