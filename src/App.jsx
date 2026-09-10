@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import DataTable from "./components/DataTable/DataTable";
 import ActionToolbar from "./components/ActionToolbar/ActionToolbar";
+import LoginForm from "./components/LoginForm/LoginForm";
 
 const API_URL = import.meta.env.VITE_API_URL || "/api";
+const LOGIN_CREDENTIALS = { login: "admin", password: "admin123" };
 let submissionsRequest;
 
 function fetchSubmissions(forceRefresh = false) {
@@ -57,6 +59,9 @@ function normalizeSubmission(submission) {
 }
 
 function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    () => sessionStorage.getItem("isAuthenticated") === "true",
+  );
   const [isDarkMode, setIsDarkMode] = useState(
     () => localStorage.getItem("theme") === "dark",
   );
@@ -71,6 +76,10 @@ function App() {
   }, [isDarkMode]);
 
   useEffect(() => {
+    if (!isAuthenticated) {
+      return undefined;
+    }
+
     let shouldUpdate = true;
 
     async function loadSubmissions() {
@@ -99,12 +108,37 @@ function App() {
     return () => {
       shouldUpdate = false;
     };
-  }, [reloadKey]);
+  }, [isAuthenticated, reloadKey]);
+
+  function handleLogin(login, password) {
+    const credentialsAreValid =
+      login === LOGIN_CREDENTIALS.login &&
+      password === LOGIN_CREDENTIALS.password;
+
+    if (credentialsAreValid) {
+      sessionStorage.setItem("isAuthenticated", "true");
+      setIsAuthenticated(true);
+    }
+
+    return credentialsAreValid;
+  }
 
   function handleLogout() {
     localStorage.removeItem("authToken");
     sessionStorage.removeItem("authToken");
+    sessionStorage.removeItem("isAuthenticated");
+    submissionsRequest = undefined;
+    setIsAuthenticated(false);
+    setSubmissions([]);
     window.dispatchEvent(new CustomEvent("app:logout"));
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <main className="app app--login">
+        <LoginForm onLogin={handleLogin} />
+      </main>
+    );
   }
 
   return (
