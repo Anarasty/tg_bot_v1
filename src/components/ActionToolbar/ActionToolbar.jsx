@@ -18,7 +18,7 @@ function getDownloadFilename(response, downloadUrl) {
   if (plainName) return plainName;
 
   const pathName = new URL(downloadUrl, window.location.href).pathname;
-  return pathName.split("/").filter(Boolean).pop() || "submissions.csv";
+  return pathName.split("/").filter(Boolean).pop() || "submissions.xlsx";
 }
 
 function ActionToolbar({ isDarkMode, onThemeToggle, downloadUrl, onLogout }) {
@@ -36,17 +36,7 @@ function ActionToolbar({ isDarkMode, onThemeToggle, downloadUrl, onLogout }) {
         throw new Error(`Download failed with status ${response.status}`);
       }
 
-      const fileBytes = new Uint8Array(await response.arrayBuffer());
-      const alreadyHasUtf8Bom =
-        fileBytes[0] === 0xef &&
-        fileBytes[1] === 0xbb &&
-        fileBytes[2] === 0xbf;
-      const file = new Blob(
-        alreadyHasUtf8Bom
-          ? [fileBytes]
-          : [new Uint8Array([0xef, 0xbb, 0xbf]), fileBytes],
-        { type: "text/csv;charset=utf-8" },
-      );
+      const file = await response.blob();
       const objectUrl = URL.createObjectURL(file);
       const link = document.createElement("a");
       link.href = objectUrl;

@@ -152,7 +152,7 @@ function App() {
       <ActionToolbar
         isDarkMode={isDarkMode}
         onThemeToggle={() => setIsDarkMode((current) => !current)}
-        downloadUrl={`${API_URL}/submissions.csv`}
+        downloadUrl={`${API_URL}/submissions.xlsx`}
         onLogout={handleLogout}
       />
     </main>
