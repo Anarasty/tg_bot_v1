@@ -2,6 +2,25 @@ import { useState } from "react";
 import { Download, LoaderCircle, LogOut, Moon, Sun } from "lucide-react";
 import "./ActionToolbar.css";
 
+function getDownloadFilename(response, downloadUrl) {
+  const disposition = response.headers.get("content-disposition") ?? "";
+  const encodedName = disposition.match(/filename\*=UTF-8''([^;]+)/i)?.[1];
+  const plainName = disposition.match(/filename="?([^";]+)"?/i)?.[1];
+
+  if (encodedName) {
+    try {
+      return decodeURIComponent(encodedName);
+    } catch {
+      return encodedName;
+    }
+  }
+
+  if (plainName) return plainName;
+
+  const pathName = new URL(downloadUrl, window.location.href).pathname;
+  return pathName.split("/").filter(Boolean).pop() || "submissions.csv";
+}
+
 function ActionToolbar({ isDarkMode, onThemeToggle, downloadUrl, onLogout }) {
   const [isDownloading, setIsDownloading] = useState(false);
 
@@ -17,11 +36,21 @@ function ActionToolbar({ isDarkMode, onThemeToggle, downloadUrl, onLogout }) {
         throw new Error(`Download failed with status ${response.status}`);
       }
 
-      const file = await response.blob();
+      const fileBytes = new Uint8Array(await response.arrayBuffer());
+      const alreadyHasUtf8Bom =
+        fileBytes[0] === 0xef &&
+        fileBytes[1] === 0xbb &&
+        fileBytes[2] === 0xbf;
+      const file = new Blob(
+        alreadyHasUtf8Bom
+          ? [fileBytes]
+          : [new Uint8Array([0xef, 0xbb, 0xbf]), fileBytes],
+        { type: "text/csv;charset=utf-8" },
+      );
       const objectUrl = URL.createObjectURL(file);
       const link = document.createElement("a");
       link.href = objectUrl;
-      link.download = "submitted-applications.csv";
+      link.download = getDownloadFilename(response, downloadUrl);
       document.body.appendChild(link);
       link.click();
       link.remove();

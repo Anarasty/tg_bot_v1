@@ -3,7 +3,7 @@ import { defineConfig, loadEnv } from "vite";
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, process.cwd(), "");
+  const env = loadEnv(mode, ".", "");
   const backendHost = env.BACKEND_HOST || "localhost";
   const backendPort = env.BACKEND_PORT || "8080";
 
