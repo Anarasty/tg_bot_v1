@@ -49,6 +49,21 @@
   outline-offset: 2px;
 }
 
+.action-toolbar-button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.action-toolbar-spinner {
+  animation: action-toolbar-spin 800ms linear infinite;
+}
+
+@keyframes action-toolbar-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .action-toolbar-divider {
   height: 1px;
   margin: 2px 5px;

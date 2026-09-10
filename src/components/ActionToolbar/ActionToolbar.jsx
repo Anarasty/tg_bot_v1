@@ -1,7 +1,38 @@
-import { Download, LogOut, Moon, Sun } from "lucide-react";
+import { useState } from "react";
+import { Download, LoaderCircle, LogOut, Moon, Sun } from "lucide-react";
 import "./ActionToolbar.css";
 
-function ActionToolbar({ isDarkMode, onThemeToggle, workbookUrl, onLogout }) {
+function ActionToolbar({ isDarkMode, onThemeToggle, downloadUrl, onLogout }) {
+  const [isDownloading, setIsDownloading] = useState(false);
+
+  async function handleDownload() {
+    if (isDownloading) return;
+
+    setIsDownloading(true);
+
+    try {
+      const response = await fetch(downloadUrl);
+
+      if (!response.ok) {
+        throw new Error(`Download failed with status ${response.status}`);
+      }
+
+      const file = await response.blob();
+      const objectUrl = URL.createObjectURL(file);
+      const link = document.createElement("a");
+      link.href = objectUrl;
+      link.download = "submitted-applications.csv";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(objectUrl);
+    } catch (error) {
+      console.error("Failed to download submissions:", error);
+    } finally {
+      setIsDownloading(false);
+    }
+  }
+
   return (
     <aside className="action-toolbar" aria-label="Page actions">
       <button
@@ -14,15 +45,20 @@ function ActionToolbar({ isDarkMode, onThemeToggle, workbookUrl, onLogout }) {
         {isDarkMode ? <Sun aria-hidden="true" /> : <Moon aria-hidden="true" />}
       </button>
 
-      <a
+      <button
         className="action-toolbar-button"
-        href={workbookUrl}
-        download="submitted-applications.xlsx"
-        aria-label="Download Excel file"
-        title="Download Excel file"
+        type="button"
+        onClick={handleDownload}
+        disabled={isDownloading}
+        aria-label="Download submissions file"
+        title={isDownloading ? "Downloading…" : "Download submissions file"}
       >
-        <Download aria-hidden="true" />
-      </a>
+        {isDownloading ? (
+          <LoaderCircle className="action-toolbar-spinner" aria-hidden="true" />
+        ) : (
+          <Download aria-hidden="true" />
+        )}
+      </button>
 
       <div className="action-toolbar-divider" />
 
