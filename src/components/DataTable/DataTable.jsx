@@ -8,8 +8,18 @@ const columns = [
   { key: "platform", label: "Платформа" },
   { key: "fullName", label: "Повне ім’я" },
   { key: "iban", label: "IBAN" },
-  { key: "ibanProblem", label: "Проблема з IBAN" },
+  { key: "bankName", label: "Назва банку" },
+  {
+    key: "ibanProblem",
+    label: "Проблема з IBAN",
+    problemTitle: "Проблема з IBAN",
+  },
   { key: "taxId", label: "Ід. код" },
+  {
+    key: "taxIdProblem",
+    label: "Проблема з Ід. код",
+    problemTitle: "Проблема з Ід. код",
+  },
   { key: "phone", label: "Телефон" },
   { key: "submittedDate", label: "Дата подання" },
 ];
@@ -71,7 +81,7 @@ function DataTable({ data, isLoading, error, onRetry }) {
   function renderCell(row, column) {
     const value = getCellValue(row, column.key);
 
-    if (column.key !== "ibanProblem" || value === "--") return value;
+    if (!column.problemTitle || value === "--") return value;
 
     const isLong = String(value).length > 28;
 
@@ -79,8 +89,13 @@ function DataTable({ data, isLoading, error, onRetry }) {
       <button
         className={`problem-cell-button${isLong ? " problem-cell-button--long" : ""}`}
         type="button"
-        onClick={() => setSelectedProblem(String(value))}
-        title="View full problem"
+        onClick={() =>
+          setSelectedProblem({
+            title: column.problemTitle,
+            text: String(value),
+          })
+        }
+        title="Переглянути повний текст"
       >
         {value}
       </button>
@@ -143,9 +158,7 @@ function DataTable({ data, isLoading, error, onRetry }) {
                 {columns.map((column) => (
                   <td
                     key={column.key}
-                    className={
-                      column.key === "ibanProblem" ? "problem-cell" : undefined
-                    }
+                    className={column.problemTitle ? "problem-cell" : undefined}
                   >
                     {renderCell(row, column)}
                   </td>
@@ -195,7 +208,7 @@ function DataTable({ data, isLoading, error, onRetry }) {
             aria-labelledby="problem-modal-title"
           >
             <div className="problem-modal-header">
-              <h2 id="problem-modal-title">IBAN problem</h2>
+              <h2 id="problem-modal-title">{selectedProblem.title}</h2>
               <button
                 className="problem-modal-close"
                 type="button"
@@ -206,7 +219,7 @@ function DataTable({ data, isLoading, error, onRetry }) {
                 <X aria-hidden="true" />
               </button>
             </div>
-            <p className="problem-modal-text">{selectedProblem}</p>
+            <p className="problem-modal-text">{selectedProblem.text}</p>
           </div>
         </div>
       )}

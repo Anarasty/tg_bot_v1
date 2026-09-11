@@ -49,8 +49,10 @@ function normalizeSubmission(submission) {
     platform: submission.Platform ?? submission.platform ?? "",
     fullName: submission["Full Name"] ?? submission.fullName ?? "",
     iban: submission.IBAN ?? submission.iban ?? "",
+    bankName: submission["Bank Name"] ?? submission.bankName ?? "",
     ibanProblem: submission["IBAN Problem"] ?? submission.ibanProblem ?? "",
     taxId: submission["Tax ID"] ?? submission.taxId ?? "",
+    taxIdProblem: submission["Tax ID problem"] ?? submission.taxIdProblem ?? "",
     phone: submission.Phone ?? submission.phone ?? "",
     submittedDate: formatSubmittedDate(
       submission["Submitted date"] ?? submission.submittedDate,
@@ -152,7 +154,7 @@ function App() {
       <ActionToolbar
         isDarkMode={isDarkMode}
         onThemeToggle={() => setIsDarkMode((current) => !current)}
-        downloadUrl={`${API_URL}/submissions.xlsx`}
+        downloadUrl={`${API_URL}/submissions/file`}
         onLogout={handleLogout}
       />
     </main>
