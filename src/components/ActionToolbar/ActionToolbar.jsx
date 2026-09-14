@@ -137,13 +137,13 @@ function ActionToolbar({ isDarkMode, onThemeToggle, downloadUrl, onLogout }) {
               className="download-modal-close"
               type="button"
               onClick={() => setIsDownloadModalOpen(false)}
-              aria-label="Close dialog"
+              aria-label="Закрити вікно"
             >
               <X aria-hidden="true" />
             </button>
 
             <h2 id="download-modal-title">
-              Do you want to erase data after download?
+              Бажаєте видалити дані після завантаження?
             </h2>
 
             <div className="download-modal-actions">
@@ -153,14 +153,14 @@ function ActionToolbar({ isDarkMode, onThemeToggle, downloadUrl, onLogout }) {
                 onClick={() => handleDownload(false)}
                 autoFocus
               >
-                NO
+                НІ
               </button>
               <button
                 className="download-modal-button download-modal-button--danger"
                 type="button"
                 onClick={() => handleDownload(true)}
               >
-                YES
+                ТАК
               </button>
             </div>
           </div>
